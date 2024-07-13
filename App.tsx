@@ -1,13 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.tsx
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/screens/LoginScreen';
 import Navigation from './src/navigation/Navigation';
+import WellcomeScreen from './src/screens/WellcomeScreen';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <Navigation/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Wellcome">
+        <Stack.Screen name="Wellcome" component={WellcomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Navigation" component={Navigation}  options={{ headerShown: false }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-
-});
+export default App;

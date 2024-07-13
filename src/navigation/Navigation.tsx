@@ -1,43 +1,54 @@
+// src/navigation/Navigation.tsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+
 import HomeScreen from '../screens/HomeScreen';
 import InventoryScreen from '../screens/InventoryScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SellScren from '../screens/SellScreen';
-import { TouchableRipple } from 'react-native-paper';
+import SellScreen from '../screens/SellScreen';
+
 const Tab = createBottomTabNavigator();
 
 const screens = [
-  { name: 'Home', component: HomeScreen, iconName: 'home' },
-  { name: 'Inventory', component: InventoryScreen, iconName: 'archive' },
-  { name: 'Sell', component: SellScren, iconName: 'shopping-cart' },
-  { name: 'Reservation', component: OrdersScreen, iconName: 'calendar' },
-  { name: 'Profile', component: ProfileScreen, iconName: 'user' },
-
+  { name: 'Inicio', component: HomeScreen, iconName: 'house' },
+  { name: 'Inventario', component: InventoryScreen, iconName: 'capsules' },
+  { name: 'Vender', component: SellScreen, iconName: 'cart-arrow-down' },
+  { name: 'Pedidos', component: OrdersScreen, iconName: 'bag-shopping' },
+  { name: 'Perfil', component: ProfileScreen, iconName: 'user' },
 ];
 
 const Navigation = () => (
-  <NavigationContainer>
-    <Tab.Navigator initialRouteName="Home">
-      {screens.map((screen) => (
-        <Tab.Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color, size }) => (
+  <Tab.Navigator
+    screenOptions={({ route }) => {
+      const screen = screens.find(screen => screen.name === route.name);
+      const iconName = screen ? screen.iconName : '';
 
-              <Icon name={screen.iconName} color={color} size={size} />
-            ),
-          }}
-        />
-      ))}
-    </Tab.Navigator>
-  </NavigationContainer>
+      return {
+        tabBarIcon: ({ color, size }) => {
+          const iconSize = size * 1.1 ;
+          return <Icon name={iconName} color={color} size={iconSize} />;
+        },
+        tabBarActiveTintColor: '#3498db',
+        tabBarInactiveTintColor: '#bdc3c7',
+        tabBarStyle: {
+          paddingTop: 15,
+          paddingBottom: 15,
+          height: 75,
+        },
+        headerShown: false, // Ocultar el nombre en la cabecera
+      };
+    }}
+  >
+    {screens.map(screen => (
+      <Tab.Screen
+        key={screen.name}
+        name={screen.name}
+        component={screen.component}
+      />
+    ))}
+  </Tab.Navigator>
 );
 
 export default Navigation;
